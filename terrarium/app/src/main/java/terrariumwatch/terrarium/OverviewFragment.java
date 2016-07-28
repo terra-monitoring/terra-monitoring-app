@@ -6,6 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class OverviewFragment extends Fragment {
     // create textview's for overview fragment
@@ -48,6 +58,43 @@ public class OverviewFragment extends Fragment {
         tempBottomValue = (TextView) rootView.findViewById(R.id.temp_bottom_value);
         humidity = (TextView) rootView.findViewById(R.id.humidity);
         humidityValue = (TextView) rootView.findViewById(R.id.humidity_value);
+
+        /**
+         * DB Connection to get data
+         */
+        // Instantiate the MySingleton.
+        com.android.volley.RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        //paring data
+                        try{
+                            JSONObject responseObject = new JSONObject(response);
+                            lastEntryValue.setText(responseObject.getString("time"));
+                            tempTopValue.setText(responseObject.getString("s1"));
+                            tempMidValue.setText(responseObject.getString("s2"));
+                            tempBottomValue.setText(responseObject.getString("s3"));
+                            humidityValue.setText(responseObject.getString("s4"));
+
+                        }catch(JSONException e1){
+                            Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
+            }
+        });
+        // Add the request to the MySingleton.
+        queue.add(stringRequest);
+
+
         return rootView;
     }
 }

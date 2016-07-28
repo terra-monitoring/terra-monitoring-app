@@ -9,14 +9,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
-public class VentFragment extends Fragment {
+public class SettingFragment extends Fragment {
     // create items
     private View rootView;
     private Switch ventSwitch;
@@ -29,15 +39,15 @@ public class VentFragment extends Fragment {
     /**
      * constructor
      */
-    public VentFragment() {
+    public SettingFragment() {
     }
 
     /**
      * create new instance of ventilator fragment
      * @return
      */
-    public static VentFragment newInstance() {
-        VentFragment fragment = new VentFragment();
+    public static SettingFragment newInstance() {
+        SettingFragment fragment = new SettingFragment();
         return fragment;
     }
 
@@ -51,7 +61,7 @@ public class VentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_vent, container, false);
+        rootView = inflater.inflate(R.layout.fragment_setting, container, false);
 
         ventSwitch = (Switch) rootView.findViewById(R.id.vent_switch);
         sunrise = (TextView) rootView.findViewById(R.id.sunrise);
@@ -64,6 +74,44 @@ public class VentFragment extends Fragment {
         ventOffVal = (EditText) rootView.findViewById(R.id.vent_off_value);
         btnSave = (Button) rootView.findViewById(R.id.save_button);
         tglPower = (ToggleButton) rootView.findViewById(R.id.power_toggle);
+
+
+        /**
+         * DB Connection to get data
+         */
+        // Instantiate the MySingleton.
+        com.android.volley.RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        //paring data
+                        try{
+                            JSONObject responseObject = new JSONObject(response);
+                            sunriseVal.setText(responseObject.getString("sunrise"));
+                            sunsetVal.setText(responseObject.getString("sunset"));
+                            ventOnVal.setText(responseObject.getString("max"));
+                            ventOffVal.setText(responseObject.getString("min"));
+                            /*.setText(responseObject.getString("auto_mod"));
+                            .setText(responseObject.getString("status"));*/
+                        }catch(JSONException e1){
+                            Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
+            }
+        });
+        // Add the request to the MySingleton.
+        queue.add(stringRequest);
+
+
 
         /**
          * set listener for ventilator mode switch
@@ -180,6 +228,12 @@ public class VentFragment extends Fragment {
                 mTimePicker.show();
             }
         });
+
+
+
+
+
+
         return rootView;
     }
 }

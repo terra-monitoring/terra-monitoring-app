@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_overview"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Aktuelle Übersicht" />
+        <item
+            android:id="@+id/nav_feed"
+            android:icon="@drawable/ic_pets_black_24dp"
+            android:title="Fütterung" />
+        <item
+            android:id="@+id/nav_size"
+            android:icon="@drawable/ic_timeline_black_24dp"
+            android:title="Größe" />
+        <item
+            android:id="@+id/nav_live"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Livestream" />
+    </group>
+
+    <item android:title="Einstellungen">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Einstellungen" />
+
+        </menu>
+    </item>
+
+</menu>
