@@ -23,10 +23,13 @@
     <item android:title="Einstellungen">
         <menu>
             <item
-                android:id="@+id/nav_setting"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Einstellungen" />
-
+                android:id="@+id/nav_luefter"
+                android:icon="@drawable/ic_toys_black_24dp"
+                android:title="Lüfter" />
+            <item
+                android:id="@+id/nav_sun"
+                android:icon="@drawable/ic_brightness_5_black_24dp"
+                android:title="Sonne" />
         </menu>
     </item>
 

@@ -1,6 +1,5 @@
 package terrariumwatch.terrarium;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -24,14 +22,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
-
-public class SettingFragment extends Fragment {
+public class LuefterFragment extends Fragment {
     // create items
     private View rootView;
     private Switch ventSwitch;
-    private TextView sunrise, sunset, ventOn, ventOff;
-    private TextView sunriseVal, sunsetVal;
+    private TextView ventOn, ventOff;
     private EditText ventOnVal, ventOffVal;
     private Button btnSave;
     private ToggleButton tglPower;
@@ -39,15 +34,15 @@ public class SettingFragment extends Fragment {
     /**
      * constructor
      */
-    public SettingFragment() {
+    public LuefterFragment() {
     }
 
     /**
      * create new instance of ventilator fragment
      * @return
      */
-    public static SettingFragment newInstance() {
-        SettingFragment fragment = new SettingFragment();
+    public static LuefterFragment newInstance() {
+        LuefterFragment fragment = new LuefterFragment();
         return fragment;
     }
 
@@ -61,18 +56,14 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_setting, container, false);
+        rootView = inflater.inflate(R.layout.fragment_luefter, container, false);
 
         ventSwitch = (Switch) rootView.findViewById(R.id.vent_switch);
-        sunrise = (TextView) rootView.findViewById(R.id.sunrise);
-        sunset = (TextView) rootView.findViewById(R.id.sunset);
         ventOn = (TextView) rootView.findViewById(R.id.vent_on);
         ventOff = (TextView) rootView.findViewById(R.id.vent_off);
-        sunriseVal = (TextView) rootView.findViewById(R.id.sunrise_value);
-        sunsetVal = (TextView) rootView.findViewById(R.id.sunset_value);
         ventOnVal = (EditText) rootView.findViewById(R.id.vent_on_value);
         ventOffVal = (EditText) rootView.findViewById(R.id.vent_off_value);
-        btnSave = (Button) rootView.findViewById(R.id.save_button);
+        btnSave = (Button) rootView.findViewById(R.id.save_buttonLuefter);
         tglPower = (ToggleButton) rootView.findViewById(R.id.power_toggle);
 
 
@@ -92,12 +83,10 @@ public class SettingFragment extends Fragment {
                         //paring data
                         try{
                             JSONObject responseObject = new JSONObject(response);
-                            sunriseVal.setText(responseObject.getString("sunrise"));
-                            sunsetVal.setText(responseObject.getString("sunset"));
-                            ventOnVal.setText(responseObject.getString("max"));
-                            ventOffVal.setText(responseObject.getString("min"));
-                            /*.setText(responseObject.getString("auto_mod"));
-                            .setText(responseObject.getString("status"));*/
+                            ventOnVal.setText(responseObject.getString("max") + " °C");
+                            ventOffVal.setText(responseObject.getString("min") + " °C");
+                            ventSwitch.setChecked(responseObject.getBoolean("auto_mod"));
+                            tglPower.setChecked(responseObject.getBoolean("status"));
                         }catch(JSONException e1){
                             Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
                         }
@@ -121,22 +110,14 @@ public class SettingFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // vent is manually controlled
-                    sunrise.setVisibility(View.GONE);
-                    sunriseVal.setVisibility(View.GONE);
-                    sunset.setVisibility(View.GONE);
-                    sunsetVal.setVisibility(View.GONE);
-                    ventOn.setVisibility(View.GONE);
-                    ventOnVal.setVisibility(View.GONE);
-                    ventOff.setVisibility(View.GONE);
-                    ventOffVal.setVisibility(View.GONE);
-                    btnSave.setVisibility(View.GONE);
+                    ventOn.setVisibility(View.VISIBLE);
+                    ventOnVal.setVisibility(View.VISIBLE);
+                    ventOff.setVisibility(View.VISIBLE);
+                    ventOffVal.setVisibility(View.VISIBLE);
+                    btnSave.setVisibility(View.VISIBLE);
                     tglPower.setVisibility(View.VISIBLE);
                 } else {
                     // vent is automatically controlled
-                    sunrise.setVisibility(View.VISIBLE);
-                    sunriseVal.setVisibility(View.VISIBLE);
-                    sunset.setVisibility(View.VISIBLE);
-                    sunsetVal.setVisibility(View.VISIBLE);
                     ventOn.setVisibility(View.VISIBLE);
                     ventOnVal.setVisibility(View.VISIBLE);
                     ventOff.setVisibility(View.VISIBLE);
@@ -171,63 +152,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        /**
-         * set listener for sunrise value time picker
-         */
-        sunriseVal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // create calendar instance
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                // creat time picker dialog
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    /**
-                     * set listener for time set
-                     * @param timePicker
-                     * @param selectedHour
-                     * @param selectedMinute
-                     */
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        sunriseVal.setText(selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);// 24 hour time
-                mTimePicker.setTitle("Sonnenaufgang wählen");
-                mTimePicker.show();
-            }
-        });
-
-        /**
-         * set listener for sunset value time picker
-         */
-        sunsetVal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // creater calendar instance
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                // create time picker dialog
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    /**
-                     * set listener for time set
-                     * @param timePicker
-                     * @param selectedHour
-                     * @param selectedMinute
-                     */
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        sunsetVal.setText(selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);// 24 hour time
-                mTimePicker.setTitle("Sonnenuntergang wählen");
-                mTimePicker.show();
-            }
-        });
 
 
 

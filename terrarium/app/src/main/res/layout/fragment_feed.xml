@@ -1,13 +1,295 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="0" />
+
+            <TextView
+                android:text="@string/date"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:ems="5"/>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker"
+                android:inputType="date"
+                android:layout_column="3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/fastentag"
+                android:id="@+id/fastentag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fastentagCheckBox"
+                android:layout_column="3"
+                android:ems="8"
+                android:checked="false" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/futter"
+                android:id="@+id/futter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/futterSpinner"
+                android:layout_column="3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/menge"
+                android:id="@+id/menge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <TextView
+                android:text="@string/mengeAnzeige"
+                android:id="@+id/mengeAnzeige"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+    </TableLayout>
+
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/mengeSeekBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                app:dsb_min="0"
+                app:dsb_max="20" />
+        </TableRow>
+    </TableLayout>
+
+
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="0" />
+
+            <TextView
+                android:text="@string/vitamine"
+                android:id="@+id/vitamine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="0" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/vitamineCheckBox"
+                android:layout_column="3"
+                android:checked="false" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/calcium"
+                android:id="@+id/calcium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/calciumCheckBox"
+                android:layout_column="3"
+                android:checked="false" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/bemerkung"
+                android:id="@+id/bemerkung"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:layout_column="1" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:id="@+id/bemerkungTextField"
+                android:ems="8"
+                android:layout_column="3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_column="1" />
+        </TableRow>
+
+    </TableLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hinzuf_gen"
+        android:id="@+id/feedSaveButton"
+        />
+</LinearLayout>

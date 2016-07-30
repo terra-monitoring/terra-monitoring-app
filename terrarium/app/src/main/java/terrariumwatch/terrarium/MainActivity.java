@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //set Startpage
+        Fragment fragment = OverviewFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 
     @Override
@@ -50,10 +56,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -73,8 +75,10 @@ public class MainActivity extends AppCompatActivity
             fragment = SizeFragment.newInstance();
         } else if (id == R.id.nav_live) {
             fragment = LiveFragment.newInstance();
-        } else if (id == R.id.nav_setting) {
-            fragment = SettingFragment.newInstance();
+        } else if (id == R.id.nav_luefter) {
+            fragment = LuefterFragment.newInstance();
+        } else if (id == R.id.nav_sun) {
+            fragment = SunFragment.newInstance();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();

@@ -76,10 +76,10 @@ public class OverviewFragment extends Fragment {
                         try{
                             JSONObject responseObject = new JSONObject(response);
                             lastEntryValue.setText(responseObject.getString("time"));
-                            tempTopValue.setText(responseObject.getString("s1"));
-                            tempMidValue.setText(responseObject.getString("s2"));
-                            tempBottomValue.setText(responseObject.getString("s3"));
-                            humidityValue.setText(responseObject.getString("s4"));
+                            tempTopValue.setText(responseObject.getString("s1") + " °C");
+                            tempMidValue.setText(responseObject.getString("s2") + " °C");
+                            tempBottomValue.setText(responseObject.getString("s3") + " °C");
+                            humidityValue.setText(responseObject.getString("s4") + " %");
 
                         }catch(JSONException e1){
                             Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();

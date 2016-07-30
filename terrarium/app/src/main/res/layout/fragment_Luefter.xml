@@ -75,59 +75,7 @@
                 android:visibility="gone"/>
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <TextView
-                android:text="@string/sunrise"
-                android:id="@+id/sunrise"
-                android:layout_column="1"
-                android:visibility="visible" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/sunrise_value"
-                android:layout_column="3"
-                android:text="@string/time"
-                android:clickable="true"
-                android:onClick="OnClick"
-                android:visibility="visible" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_column="1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/sunset"
-                android:id="@+id/sunset"
-                android:layout_column="1"
-                android:visibility="visible" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/sunset_value"
-                android:layout_column="3"
-                android:text="@string/time"
-                android:inputType="time"
-                android:clickable="true"
-                android:onClick="OnClick"
-                android:visibility="visible" />
-        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -206,7 +154,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/save_button"
+                android:id="@+id/save_buttonLuefter"
                 android:layout_column="1"
                 android:text="@string/button_save"
                 android:visibility="visible"/>
