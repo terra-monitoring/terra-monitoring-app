@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -292,4 +293,9 @@
         android:text="@string/hinzuf_gen"
         android:id="@+id/feedSaveButton"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/checkInput" />
 </LinearLayout>

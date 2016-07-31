@@ -4,9 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lüftersteuerung"
+        android:id="@+id/textView6" />
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TableRow
             android:layout_width="match_parent"
@@ -17,39 +23,22 @@
                 android:layout_height="10dp"
                 android:layout_column="1" />
         </TableRow>
+    </TableLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <Switch
+        android:id="@+id/vent_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/vent_manual"
+        android:textOff="@string/vent_auto"
+        android:showText="true"
+        android:layout_column="3"
+        android:checked="true" />
 
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="10dp"
-                android:layout_column="0" />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:text="@string/vent"
-                android:id="@+id/vent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1" />
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="10dp"
-                android:layout_column="2" />
-
-            <Switch
-                android:id="@+id/vent_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOn="@string/vent_manual"
-                android:textOff="@string/vent_auto"
-                android:showText="true"
-                android:layout_column="3"
-                android:checked="false" />
-
-        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -61,21 +50,19 @@
                 android:layout_height="30dp" />
 
         </TableRow>
+    </TableLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/power_toggle"
+        android:layout_column="3"
+        android:checked="false"
+        android:visibility="gone"/>
 
-            <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/power_toggle"
-                android:layout_column="3"
-                android:checked="false"
-                android:visibility="gone"/>
-        </TableRow>
-
-
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TableRow
             android:layout_width="match_parent"
@@ -105,6 +92,13 @@
                 android:inputType="numberDecimal"
                 android:maxLength="5"
                 android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" °C"
+                android:id="@+id/textViewUnit1"
+                android:layout_column="4" />
         </TableRow>
 
         <TableRow
@@ -135,6 +129,13 @@
                 android:inputType="numberDecimal"
                 android:maxLength="5"
                 android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" °C"
+                android:id="@+id/textViewUnit2"
+                android:layout_column="4" />
         </TableRow>
 
         <TableRow
@@ -146,19 +147,18 @@
                 android:layout_height="20dp"
                 android:layout_column="1" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/save_buttonLuefter"
-                android:layout_column="1"
-                android:text="@string/button_save"
-                android:visibility="visible"/>
-        </TableRow>
-
     </TableLayout>
+
+    <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/save_buttonLuefter"
+    android:layout_column="1"
+    android:text="@string/button_save"
+    android:visibility="visible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/checkInput" />
 </LinearLayout>

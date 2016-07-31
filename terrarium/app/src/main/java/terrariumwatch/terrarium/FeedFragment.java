@@ -26,15 +26,18 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FeedFragment extends Fragment {
     //create items
     private View rootView;
-    private TextView date, dateText, fastentagText, futterText, mengeText, vitamineText, calciumText, bemerkungText, mengeAnzeige;
+    private TextView date, dateText, fastentagText, futterText, mengeText, vitamineText, calciumText, bemerkungText, mengeAnzeige, checkInput;
     private CheckBox fastentag, vitamine, calcium;
     private Spinner futter;
     private EditText bemerkung;
@@ -82,6 +85,14 @@ public class FeedFragment extends Fragment {
         calcium = (CheckBox) rootView.findViewById(R.id.calciumCheckBox);
         bemerkung = (EditText) rootView.findViewById(R.id.bemerkungTextField);
         button = (Button) rootView.findViewById(R.id.feedSaveButton);
+        checkInput = (TextView) rootView.findViewById(R.id.checkInput);
+
+        /**
+         * get current date
+         */
+        long currentDate = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        date.setText(sdf.format(currentDate));
 
 
         /**
@@ -89,10 +100,10 @@ public class FeedFragment extends Fragment {
          */
         // Instantiate the MySingleton.
         com.android.volley.RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
+        final String urlGet ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlGet,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -118,11 +129,19 @@ public class FeedFragment extends Fragment {
                         }
                     }
                 }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
+                }
+        }){
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
+            protected Map<String,String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("action", "get");
+
+                return params;
             }
-        });
+        };
         // Add the request to the MySingleton.
         queue.add(stringRequest);
 
@@ -131,7 +150,7 @@ public class FeedFragment extends Fragment {
 
 
         /**
-         * set listener for fatentag
+         * set listener for fastentag
          */
         fastentag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -200,7 +219,6 @@ public class FeedFragment extends Fragment {
         /**
          * set listener for date picker
          */
-
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,13 +239,96 @@ public class FeedFragment extends Fragment {
                      */
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        date.setText(selectedDay + "." + selectedMonth + "." + selectedYear);
+                        //TODO month check in DataPicker
+                        date.setText(selectedDay + "." + (selectedMonth+1) + "." + selectedYear);
                     }
                 }, year, month, day);
                 mDatePicker.setTitle("Datum wählen");
                 mDatePicker.show();
             }
         });
+
+
+        /**
+         * get Data if button pushed
+         */
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String userDate = date.getText().toString();
+
+                String userFastentag = null;
+                if(fastentag.isChecked()){
+                    userFastentag = "true";
+                } else {
+                    userFastentag = "false";
+                }
+
+                final String userFutter = futter.getSelectedItem().toString();
+
+                final String userMenge = mengeAnzeige.getText().toString();
+
+                String userVitamine = null;
+                if(vitamine.isChecked()){
+                    userVitamine = "true";
+                } else {
+                    userVitamine = "false";
+                }
+
+                String userCalcium = null;
+                if(calcium.isChecked()){
+                    userCalcium = "true";
+                } else {
+                    userCalcium = "false";
+                }
+
+                final String userBemerkung = bemerkung.getText().toString();
+
+
+                final HashMap<String, String> params = new HashMap<String, String>();
+                params.put("action", "set");
+                params.put("page", "feed");
+                params.put("date", userDate);
+                params.put("fastentag", userFastentag);
+                params.put("futter", userFutter);
+                params.put("menge", userMenge);
+                params.put("vitamine", userVitamine);
+                params.put("calcium", userCalcium);
+                params.put("bemerkung", userBemerkung);
+
+                final String urlSet ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
+                StringRequest sendRequest = new StringRequest(Request.Method.POST, urlSet, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        checkInput.setText(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        checkInput.setText(error.toString());
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+
+                        return params;
+                    }
+                };
+                // Add the request to the MySingleton.
+                com.android.volley.RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue.add(sendRequest);
+            }
+        });
+
+
+
+
+
+
+
+
+
+
 
 
         return rootView;

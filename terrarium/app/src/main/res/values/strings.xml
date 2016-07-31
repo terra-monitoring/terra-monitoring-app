@@ -43,4 +43,6 @@
     <string name="bemerkung">Bemerkung:</string>
     <string name="hinzuf_gen">Hinzufügen</string>
     <string name="mengeAnzeige"> 0</string>
+    <string name="gewicht">Gewicht:</string>
+    <string name="länge">Länge:</string>
 </resources>

@@ -17,6 +17,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OverviewFragment extends Fragment {
     // create textview's for overview fragment
     private TextView lastEntry, tempTop, tempMid, tempBottom, humidity,
@@ -67,7 +70,7 @@ public class OverviewFragment extends Fragment {
         String url ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -90,7 +93,15 @@ public class OverviewFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
             }
-        });
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("action", "get");
+
+                return params;
+            }
+        };
         // Add the request to the MySingleton.
         queue.add(stringRequest);
 

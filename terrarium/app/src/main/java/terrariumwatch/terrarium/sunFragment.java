@@ -20,14 +20,16 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SunFragment extends Fragment {
     // create items
     private View rootView;
-    private TextView sunrise, sunset;
-    private TextView sunriseVal, sunsetVal;
-    private Button btnSave;
+    private TextView sunrise, sunset, sunriseVal, sunsetVal, checkInput;
+    private Button button;
 
     /**
      * constructor
@@ -54,7 +56,8 @@ public class SunFragment extends Fragment {
         sunset = (TextView) rootView.findViewById(R.id.sunset);
         sunriseVal = (TextView) rootView.findViewById(R.id.sunrise_value);
         sunsetVal = (TextView) rootView.findViewById(R.id.sunset_value);
-        btnSave = (Button) rootView.findViewById(R.id.save_buttonSun);
+        button = (Button) rootView.findViewById(R.id.save_buttonSun);
+        checkInput = (TextView) rootView.findViewById(R.id.checkInput);
 
 
 
@@ -66,7 +69,7 @@ public class SunFragment extends Fragment {
         String url ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -74,8 +77,8 @@ public class SunFragment extends Fragment {
                         //paring data
                         try{
                             JSONObject responseObject = new JSONObject(response);
-                            sunriseVal.setText(responseObject.getString("sunrise") + " Uhr");
-                            sunsetVal.setText(responseObject.getString("sunset") + " Uhr");
+                            sunriseVal.setText(responseObject.getString("sunrise"));
+                            sunsetVal.setText(responseObject.getString("sunset"));
                         }catch(JSONException e1){
                             Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
                         }
@@ -85,7 +88,15 @@ public class SunFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext(), "No Data Found", Toast.LENGTH_LONG).show();
             }
-        });
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("action", "get");
+
+                return params;
+            }
+        };
         // Add the request to the MySingleton.
         queue.add(stringRequest);
 
@@ -97,9 +108,19 @@ public class SunFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // create calendar instance
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                int hour = 0;
+                try {
+                    hour = dateFormat.parse(sunriseVal.getText().toString()).getHours();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                int minute = 0;
+                try {
+                    minute = dateFormat.parse(sunriseVal.getText().toString()).getMinutes();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 // creat time picker dialog
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
@@ -111,7 +132,8 @@ public class SunFragment extends Fragment {
                      */
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        sunriseVal.setText(selectedHour + ":" + selectedMinute);
+                        sunriseVal.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+
                     }
                 }, hour, minute, true);// 24 hour time
                 mTimePicker.setTitle("Sonnenaufgang wählen");
@@ -126,9 +148,19 @@ public class SunFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // creater calendar instance
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                int hour = 0;
+                try {
+                    hour = dateFormat.parse(sunsetVal.getText().toString()).getHours();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                int minute = 0;
+                try {
+                    minute = dateFormat.parse(sunsetVal.getText().toString()).getMinutes();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 // create time picker dialog
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
@@ -140,11 +172,53 @@ public class SunFragment extends Fragment {
                      */
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        sunsetVal.setText(selectedHour + ":" + selectedMinute);
+                        sunsetVal.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                     }
                 }, hour, minute, true);// 24 hour time
                 mTimePicker.setTitle("Sonnenuntergang wählen");
                 mTimePicker.show();
+            }
+        });
+
+        /**
+         * get Data if button pushed
+         */
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String userSunrise = sunriseVal.getText().toString();
+
+                final String userSunset = sunsetVal.getText().toString();
+
+
+                final HashMap<String, String> params = new HashMap<String, String>();
+                params.put("action", "set");
+                params.put("page", "sun");
+                params.put("sunrise", userSunrise);
+                params.put("sunset", userSunset);
+
+
+                final String urlSet ="http://pi-terra.ddnss.de/terra/app/appIndex.php";
+                StringRequest sendRequest = new StringRequest(Request.Method.POST, urlSet, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        checkInput.setText(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        checkInput.setText(error.toString());
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+
+                        return params;
+                    }
+                };
+                // Add the request to the MySingleton.
+                com.android.volley.RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue.add(sendRequest);
             }
         });
 
