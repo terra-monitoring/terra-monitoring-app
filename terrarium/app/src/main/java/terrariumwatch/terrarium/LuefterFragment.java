@@ -1,7 +1,9 @@
 package terrariumwatch.terrarium;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,16 +127,6 @@ public class LuefterFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    // vent is manually controlled
-                    ventOn.setVisibility(View.GONE);
-                    ventOnVal.setVisibility(View.GONE);
-                    ventOff.setVisibility(View.GONE);
-                    ventOffVal.setVisibility(View.GONE);
-                    btnSave.setVisibility(View.VISIBLE);
-                    tglPower.setVisibility(View.VISIBLE);
-                    unit1.setVisibility(View.GONE);
-                    unit2.setVisibility(View.GONE);
-                } else {
                     // vent is automatically controlled
                     ventOn.setVisibility(View.VISIBLE);
                     ventOnVal.setVisibility(View.VISIBLE);
@@ -144,6 +136,17 @@ public class LuefterFragment extends Fragment {
                     tglPower.setVisibility(View.GONE);
                     unit1.setVisibility(View.VISIBLE);
                     unit2.setVisibility(View.VISIBLE);
+                    tglPower.setChecked(false);
+                } else {
+                    // vent is manually controlled
+                    ventOn.setVisibility(View.GONE);
+                    ventOnVal.setVisibility(View.GONE);
+                    ventOff.setVisibility(View.GONE);
+                    ventOffVal.setVisibility(View.GONE);
+                    btnSave.setVisibility(View.VISIBLE);
+                    tglPower.setVisibility(View.VISIBLE);
+                    unit1.setVisibility(View.GONE);
+                    unit2.setVisibility(View.GONE);
                 }
             }
         });
@@ -174,11 +177,14 @@ public class LuefterFragment extends Fragment {
 
                 final String userMin = ventOffVal.getText().toString();
 
+                TelephonyManager telephonyManager = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                String imei = telephonyManager.getDeviceId();
 
 
                 final HashMap<String, String> params = new HashMap<String, String>();
                 params.put("action", "set");
-                params.put("page", "feed");
+                params.put("imei",  imei);
+                params.put("page", "luefter");
                 params.put("automod", userAutomod);
                 params.put("manuel", userManuel);
                 params.put("max", userMax);

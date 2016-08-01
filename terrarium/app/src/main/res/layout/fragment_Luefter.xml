@@ -29,8 +29,8 @@
         android:id="@+id/vent_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOn="@string/vent_manual"
-        android:textOff="@string/vent_auto"
+        android:textOn="@string/vent_auto"
+        android:textOff="@string/vent_manual"
         android:showText="true"
         android:layout_column="3"
         android:checked="true" />

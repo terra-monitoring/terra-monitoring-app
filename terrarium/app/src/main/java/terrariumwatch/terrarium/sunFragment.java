@@ -1,8 +1,10 @@
 package terrariumwatch.terrarium;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -190,9 +192,12 @@ public class SunFragment extends Fragment {
 
                 final String userSunset = sunsetVal.getText().toString();
 
+                TelephonyManager telephonyManager = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                String imei = telephonyManager.getDeviceId();
 
                 final HashMap<String, String> params = new HashMap<String, String>();
                 params.put("action", "set");
+                params.put("imei",  imei);
                 params.put("page", "sun");
                 params.put("sunrise", userSunrise);
                 params.put("sunset", userSunset);

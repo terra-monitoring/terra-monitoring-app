@@ -1,8 +1,10 @@
 package terrariumwatch.terrarium;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,11 +91,9 @@ public class SizeFragment extends Fragment{
                      */
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                    //TODO month check in DataPicker
                     date.setText(selectedDay + "." + (selectedMonth+1) + "." + selectedYear);
                     }
                 }, year, month, day);
-                mDatePicker.setTitle("Datum wählen");
                 mDatePicker.show();
             }
         });
@@ -111,9 +111,12 @@ public class SizeFragment extends Fragment{
 
                 final String userLaenge = laenge.getText().toString();
 
+                TelephonyManager telephonyManager = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                String imei = telephonyManager.getDeviceId();
 
                 final HashMap<String, String> params = new HashMap<String, String>();
                 params.put("action", "set");
+                params.put("imei",  imei);
                 params.put("page", "size");
                 params.put("date", userDate);
                 params.put("gewicht", userGewicht);
