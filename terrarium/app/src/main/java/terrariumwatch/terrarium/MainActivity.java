@@ -1,6 +1,7 @@
 package terrariumwatch.terrarium;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        startService(new Intent(this, YourService.class));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity
             fragment = LuefterFragment.newInstance();
         } else if (id == R.id.nav_sun) {
             fragment = SunFragment.newInstance();
+        } else if (id == R.id.nav_cam) {
+            fragment = CamFragment.newInstance();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();

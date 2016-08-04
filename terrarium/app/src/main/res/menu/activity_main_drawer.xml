@@ -16,7 +16,7 @@
             android:title="Größe" />
         <item
             android:id="@+id/nav_live"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_videocam_black_24dp"
             android:title="Livestream" />
     </group>
 
@@ -30,6 +30,12 @@
                 android:id="@+id/nav_sun"
                 android:icon="@drawable/ic_brightness_5_black_24dp"
                 android:title="Sonne" />
+
+            <item
+                android:id="@+id/nav_cam"
+                android:icon="@drawable/ic_camera_black_24dp"
+                android:title="Kamera" />
+
         </menu>
     </item>
 

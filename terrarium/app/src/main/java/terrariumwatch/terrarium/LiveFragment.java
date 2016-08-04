@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 public class LiveFragment extends Fragment {
@@ -38,7 +39,14 @@ public class LiveFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_live, container, false);
         WebView viewById = (WebView) rootView.findViewById(R.id.webView);
+
+
+        //viewById.getSettings().setLoadWithOverviewMode(true);
+        //viewById.getSettings().setUseWideViewPort(true);
+        viewById.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         viewById.loadUrl(vidAddress);
+
+
         return rootView;
     }
 }
